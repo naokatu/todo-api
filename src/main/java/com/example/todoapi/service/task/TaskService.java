@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TaskService {
 
-    private final TaskRepository repository;
     private final TaskRepository taskRepository;
 
     public TaskEntity find(long taskId) {
