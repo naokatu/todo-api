@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -22,5 +25,12 @@ public class TaskService {
         var record = new TaskRecord(null, title);
         taskRepository.insert(record);
         return new TaskEntity(record.getId(), record.getTitle());
+    }
+
+    public List<TaskEntity> findAll(int limit, long offset) {
+        return taskRepository.selectList(limit, offset)
+                .stream()
+                .map(record -> new TaskEntity(record.getId(), record.getTitle()))
+                .toList();
     }
 }
