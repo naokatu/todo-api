@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -22,5 +24,19 @@ public class TaskService {
         var record = new TaskRecord(null, title);
         taskRepository.insert(record);
         return new TaskEntity(record.getId(), record.getTitle());
+    }
+
+    public List<TaskEntity> findAll(int limit, long offset) {
+        return taskRepository.selectList(limit, offset)
+                .stream()
+                .map(record -> new TaskEntity(record.getId(), record.getTitle()))
+                .toList();
+    }
+
+    public TaskEntity update(Long taskId, String title) {
+        taskRepository.select(taskId)
+                        .orElseThrow(() -> new TaskEntityNotFoundException(taskId));
+        taskRepository.update(new TaskRecord(taskId, title));
+        return find(taskId);
     }
 }

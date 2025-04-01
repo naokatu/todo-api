@@ -1,11 +1,9 @@
 package com.example.todoapi.repository.task;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Optional;
+import java.util.List;
 
 @Mapper
 public interface TaskRepository {
@@ -16,4 +14,10 @@ public interface TaskRepository {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     @Insert("INSERT INTO tasks (title) VALUES (#{title})")
     void insert(TaskRecord record);
+
+    @Select("SELECT id, title FROM tasks LIMIT #{limit} OFFSET #{offset}")
+    List<TaskRecord> selectList(int limit, long offset);
+
+    @Update("UPDATE tasks SET title = #{title} WHERE id = #{id}")
+    void update(TaskRecord taskRecord);
 }
