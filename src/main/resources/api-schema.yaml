@@ -87,6 +87,46 @@ paths:
               schema:
                 $ref: "#/components/schemas/BadRequestError"
   /tasks/{taskId}:
+    put:
+      summary: タスク更新
+      description: 指定されたタスクをリクエストボディの内容で上書きします
+      operationId: editTask
+      tags:
+        - tasks
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: 更新するタスクのID
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskForm"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskDTO"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourseNotFoundError"
     get:
       summary: 単一タスク取得
       description: 指定されたIDのタスクを一つ取得する
