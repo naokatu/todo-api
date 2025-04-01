@@ -1,6 +1,5 @@
 package com.example.todoapi.controller.advice;
 
-import com.example.todoapi.model.BadRequestError;
 import com.example.todoapi.model.ResourseNotFoundError;
 import com.example.todoapi.service.task.TaskEntityNotFoundException;
 import org.springframework.http.HttpHeaders;
