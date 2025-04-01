@@ -17,6 +17,45 @@ paths:
         '200':
           description: OK
   /tasks/:
+    get:
+      summary: タスク一覧取得
+      description: タスクの一覧を取得する
+      operationId: listTasks
+      tags:
+        - tasks
+      parameters:
+        - name: limit
+          in: query
+          description: 取得するタスクの最大数
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: offset
+          in: query
+          description: 取得するタスクのオフセット
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskListDTO"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
     post:
       summary: タスク作成
       description: タスクを作成します
@@ -100,6 +139,38 @@ components:
       required:
         - id
         - title
+    PageDTO:
+      description: ページング情報
+      type: object
+      properties:
+        limit:
+          type: integer
+          format: int32
+          description: リクエストされた limit
+        offset:
+          type: integer
+          format: int64
+          description: リクエストされた offset
+        size:
+          type: integer
+          format: int32
+          description: 取得できた件数
+      required:
+        - limit
+        - offset
+        - size
+    TaskListDTO:
+      description: タスクのリスト
+      type: object
+      properties:
+        page:
+          $ref: "#/components/schemas/PageDTO"
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/TaskDTO"
+      required:
+        - results
     ResourseNotFoundError:
       description: 指定したリソースが存在しない
       type: object

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.Optional;
+import java.util.List;
 
 @Mapper
 public interface TaskRepository {
@@ -16,4 +17,7 @@ public interface TaskRepository {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     @Insert("INSERT INTO tasks (title) VALUES (#{title})")
     void insert(TaskRecord record);
+
+    @Select("SELECT id, title FROM tasks LIMIT #{limit} OFFSET #{offset}")
+    List<TaskRecord> selectList(int limit, long offset);
 }
